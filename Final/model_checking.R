@@ -10,37 +10,22 @@ m <- lm(price~bathrm, data = dtrain.nona)
 summary(m)
 plot(m)
 
-# hf_bathrm
-p + geom_boxplot(mapping= aes(x=hf_bathrm,y=price, group=hf_bathrm)) + 
-  ggtitle('Price vs Half Bathrooms')
-
-m <- lm(price~hf_bathrm, data = dtrain.nona)
-summary(m)
-plot(m)
-
-
-# heat
-p + geom_boxplot(mapping= aes(x=heat,y=price, group=heat)) + 
-  ggtitle('Price vs Heat')
-
-m <- lm(price~heat, data = dtrain.nona)
-summary(m)
-plot(m)
-
-# ac
-p + geom_boxplot(mapping= aes(x=heat,y=price, group=heat)) + 
-  ggtitle('Price vs Heat')
-
-m <- lm(price~heat, data = dtrain.nona)
-summary(m)
-plot(m)
-
+# plot all preditors with price
 for (name in names(dtrain.nona)){
-  p + geom_boxplot(mapping= aes(x=name,y=price, group=name)) + 
-    ggtitle(paste('Price vs ', name))
+  
+  print(p + geom_boxplot(mapping= aes_string(x=name,y="price", group=name)) + 
+    ggtitle(paste('Price vs ', name)))
+  
+  ggsave(paste("price_vs_",name,".pdf"))
 }
 
-
-for (name in names(dtrain.nona)){
-  print(name)
+for (col1 in dtrain.nona){
+  for (col2 in dtrain.nona){
+    interaction.plot(col1,col2, dtrain.nona$price)
+  }
 }
+
+interaction.plot(dtrain.nona$ac,dtrain.nona$heat, dtrain.nona$price)
+interaction.plot(dtrain.nona$ac,dtrain.nona$fireplaces, dtrain.nona$price)
+interaction.plot(dtrain.nona$ac,dtrain.nona$fireplaces, dtrain.nona$price)
+

@@ -1,16 +1,11 @@
 library(ggplot2)
 
-summary(dtrain.nona)
+dim(dtrain)
 
-p <- ggplot(data=dtrain.nona)
+summary(dtrain)
 
-p + geom_point(mapping=aes(x=eyb, y=price))
+sapply(dtrain, class)
 
-p + geom_point(mapping=aes(x=landarea, y=price))
-
-p + geom_boxplot(mapping= aes(x=heat, y=price))
-
-p + geom_histogram(mapping= aes(x=price))
 
 
 
