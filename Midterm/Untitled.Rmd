@@ -1,0 +1,29 @@
+---
+title: "Untitled"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+```{r cars}
+data <- read.delim('q6.txt', header = TRUE, sep = ',')
+
+# feature engineering
+f1 <- data$x1 - data$x2 - data$x3 
+f2 <- data$x4 + (1/5)*data$x2 + (8/5)*data$x3 
+
+# model with restriction
+m.r <- lm(data$y~ f1 + f2)
+summary(m.r)
+
+# model without restriction
+m <- lm(data$y ~ data$x1 + data$x2 + data$x3 + data$x4)
+summary(m)
+
+# compare models
+anova(m.r, m)
+
+```
+
+Since the p value is not significant we cannot reject the restricted model

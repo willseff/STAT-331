@@ -1,0 +1,29 @@
+---
+title: "Q6_midterm"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Question 6
+
+```{r}
+data <- read.delim('q6.txt', header = TRUE, sep = ',')
+
+# feature engineering
+f1 <- data$x1 - data$x2 - data$x3 + data$x1 
+f2 <- data$x4 - 7*data$x2 - 2*data$x3 
+
+# model with restriction
+m.r <- lm(data$y~ f1 + f2)
+summary(m.r)
+
+# model without restriction
+m <- lm(data$y ~ data$x1 + data$x2 + data$x3 + data$x4)
+summary(m)
+
+# compare models
+anova(m.r, m)
+```
+
+Since the p value is not significant we cannot reject the restricted model
