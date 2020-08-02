@@ -1,25 +1,22 @@
-library(ggplot2)
-
-summary(dtrain)
-dim(dtrain)
+source("20519497.R")
 
 preprocessing <- function(df) {
   # treat nas in stories
   # if na then take the value from style
   df$stories <- ifelse(is.na(df$stories),
-                           as.numeric(substring(df$style,1,1)),
-                           df$stories)
+                       as.numeric(substring(df$style,1,1)),
+                       df$stories)
   
   # treat nas in yr remodel
   # create new col binary whether been remodeled
   df$remdl <- ifelse(is.na(df$yr_rmdl),
-                         "Y",
-                         "N")
+                     "Y",
+                     "N")
   
   # if it is never remodeled then set year as eyb
   df$yr_rmdl <- ifelse(is.na(df$yr_rmdl),
-                           df$eyb,
-                           df$yr_rmdl)
+                       df$eyb,
+                       df$yr_rmdl)
   
   #sale_year predictor
   df$sale_year <- format(as.Date(df$saledate), "%Y")
@@ -35,7 +32,7 @@ preprocessing <- function(df) {
   df$sale_eyb <- df$sale_year - df$eyb
   
   # sale year remodel
-  df$sale_yr_rmdl <- df$yr_rmdl - df$year
+  df$sale_yr_rmdl <- df$yr_rmdl - df$sale_year
   
   # gba percentage of total land
   df$gba_p <- df$gba/df$landarea
@@ -57,24 +54,15 @@ preprocessing <- function(df) {
   return(df)
   
 }
+dtrain <- preprocessing(dtrain)
 
-dtrain<- preprocessing(dtrain)
+######## model fitting #########
+# A simple linear model fit
+fit <- lm(price ~ saledate + gba + grade + I(ayb^4) + I(bathrm_tot^2) + 
+            fireplaces + I(sale_eyb^4) + extwall + gba_p, dtrain)
+pred <- predict(fit, newdata=preprocessing(dtest))
+res <- data.frame(Id=dtest$Id, price=pmax(pred,1))
+return(res)
 
-
-# month predictor
-# not needed bc useless
-#dtrain$month <- format(as.Date(dtrain$saledate), "%m")
-#dtrain$month
-
-# dtrain just categorical varaibles and price
-
-# dtrain just ordinal variabes and price
-
-# dtain just continuous varaiables and price
-c("landarea","price")
-
-
-
-
-
-
+pred[pred<0]<-1
+pred
