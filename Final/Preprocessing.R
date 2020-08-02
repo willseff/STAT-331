@@ -21,5 +21,26 @@ dtrain.nona <- dtrain.nona[!ind,]
 # check if any NAs left
 sum(is.na(dtrain.nona))
 
+#date
+dtrain$saledate
+
+as.Date(dtrain$saledate)$month
+
+dtrain$Month_Yr <- format(as.Date(dtrain$saledate), "%Y-%m")
+
+dtrain$year <- format(as.Date(dtrain$saledate), "%Y")
+
+dtrain$year
+
+# dtrain just categorical varaibles and price
+
+# dtrain just ordinal variabes and price
+
+# dtain just continuous varaiables and price
+c("landarea","price","")
+
+
+
+
 
 

@@ -1,5 +1,11 @@
-p <- ggplot(data=dtrain.nona)
+p <- ggplot(data=dtrain)
 names(dtrain.nona)
+
+#year
+p + geom_boxplot(mapping= aes(x=year,y=price, group=year)) + 
+  ggtitle('Price vs Year')
+
+p+ geom_histogram(mapping = aes(x=year), stat="count")
 
 # bathrm
 p + geom_boxplot(mapping= aes(x=bathrm,y=price, group=bathrm)) + 
