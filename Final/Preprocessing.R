@@ -1,6 +1,7 @@
 library(ggplot2)
 
 summary(dtrain)
+dim(dtrain)
 
 # treat nas in stories
 # if na then take the value from style
@@ -22,6 +23,9 @@ dtrain$yr_rmdl <- ifelse(is.na(dtrain$yr_rmdl),
 #sale_year predictor
 dtrain$sale_year <- format(as.Date(dtrain$saledate), "%Y")
 dtrain$sale_year <- as.integer(dtrain$sale_year)
+
+# drop saledate entirely bc its too granular
+dtrain$saledate <- as.Date(dtrain$saledate)
 
 # month predictor
 # not needed bc useless
