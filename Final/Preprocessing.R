@@ -9,7 +9,12 @@ dtrain$stories <- ifelse(is.na(dtrain$stories),
                          dtrain$stories)
 
 # treat nas in yr remodel
-# is never remodeled then set year as eyb
+# create new col binary whether been remodeled
+dtrain$remdl <- ifelse(is.na(dtrain$yr_rmdl),
+                       "Y",
+                       "N")
+
+# if it is never remodeled then set year as eyb
 dtrain$yr_rmdl <- ifelse(is.na(dtrain$yr_rmdl),
                          dtrain$eyb,
                          dtrain$yr_rmdl)
@@ -37,6 +42,17 @@ dtrain$gba_p <- dtrain$gba/dtrain$landarea
 
 # total bathroom
 dtrain$bathrm_tot <- dtrain$bathrm + 0.5*dtrain$hf_bathrm
+
+# grade predictor change to ordinal
+unique(dtrain$grade)
+dtrain$grade <- factor(dtrain$grade, order = TRUE, 
+                                    levels = c("Low Quality",
+                                               "Fair Quality",
+                                               "Average",
+                                               "Above Average",
+                                               "Good Quality",
+                                               "Very Good",
+                                               "Superior"))
 
 # dtrain just categorical varaibles and price
 
