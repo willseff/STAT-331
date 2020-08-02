@@ -31,7 +31,4 @@ for (col1 in dtrain.nona){
   }
 }
 
-interaction.plot(dtrain.nona$ac,dtrain.nona$heat, dtrain.nona$price)
-interaction.plot(dtrain.nona$ac,dtrain.nona$fireplaces, dtrain.nona$price)
-interaction.plot(dtrain.nona$ac,dtrain.nona$fireplaces, dtrain.nona$price)
 

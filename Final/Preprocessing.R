@@ -2,42 +2,48 @@ library(ggplot2)
 
 summary(dtrain)
 
-# number of NAs
-sum(is.na(dtrain))
+# treat nas in stories
+# if na then take the value from style
+dtrain$stories <- ifelse(is.na(dtrain$stories),
+                         as.numeric(substring(dtrain$style,1,1)),
+                         dtrain$stories)
 
-# percent NA
-apply(dtrain, 2, function(col)sum(is.na(col))/length(col))
+# treat nas in yr remodel
+# is never remodeled then set year as eyb
+dtrain$yr_rmdl <- ifelse(is.na(dtrain$yr_rmdl),
+                         dtrain$eyb,
+                         dtrain$yr_rmdl)
 
-# new df with no NAs
-dtrain.nona <- dtrain
+#sale_year predictor
+dtrain$sale_year <- format(as.Date(dtrain$saledate), "%Y")
+dtrain$sale_year <- as.integer(dtrain$sale_year)
 
-# drop column
-dtrain.nona$yr_rmdl <- NULL
+# month predictor
+# not needed bc useless
+#dtrain$month <- format(as.Date(dtrain$saledate), "%m")
+#dtrain$month
 
-# delete NA rows in stories
-ind <- is.na(dtrain$stories)
-dtrain.nona <- dtrain.nona[!ind,]
+# sale ayb
+dtrain$sale_ayb <- dtrain$sale_year - dtrain$ayb
 
-# check if any NAs left
-sum(is.na(dtrain.nona))
+# sale eyb
+dtrain$sale_eyb <- dtrain$sale_year - dtrain$eyb
 
-#date
-dtrain$saledate
+# sale year remodel
+dtrain$sale_yr_rmdl <- dtrain$yr_rmdl - dtrain$year
 
-as.Date(dtrain$saledate)$month
+# gba percentage of total land
+dtrain$gba_p <- dtrain$gba/dtrain$landarea
 
-dtrain$Month_Yr <- format(as.Date(dtrain$saledate), "%Y-%m")
-
-dtrain$year <- format(as.Date(dtrain$saledate), "%Y")
-
-dtrain$year
+# total bathroom
+dtrain$bathrm_tot <- dtrain$bathrm + 0.5*dtrain$hf_bathrm
 
 # dtrain just categorical varaibles and price
 
 # dtrain just ordinal variabes and price
 
 # dtain just continuous varaiables and price
-c("landarea","price","")
+c("landarea","price")
 
 
 
