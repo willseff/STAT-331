@@ -1,4 +1,3 @@
-
 ########## stepwise ##########
 nullmodel <- lm(price~1, data=dtrain)
 fullmodel <- lm(price~(.)^2 + I(gba^2) + I(bathrm^2) + I(hf_bathrm^2) + I(rooms^2) + 
@@ -127,7 +126,7 @@ m_boxcox2 <- lm(price^0.5 ~ saledate + gba + grade + I(ayb^4) + I(bathrm_tot^2) 
 anova(m_boxcox2)
 plot(m_boxcox2)
 
-# third iteration
+# third iteration ######best one so far!
 
 m_boxcox3 <- lm(price^0.5 ~ saledate + gba + grade + ayb + I(ayb^2) + bathrm_tot + 
                   fireplaces+ sale_eyb + I(sale_eyb^2)+ I(sale_eyb^3) + I(sale_eyb^4) + 
