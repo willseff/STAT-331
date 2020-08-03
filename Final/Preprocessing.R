@@ -73,6 +73,8 @@ dtrain<- preprocessing(dtrain)
 # dtain just continuous varaiables and price
 c("landarea","price")
 
+unique(dtest$grade)
+
 
 
 

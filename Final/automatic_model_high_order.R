@@ -88,6 +88,21 @@ plot(m5, which=1, pch=1, cex=0.3)
 
 plot(m5)
 
+######## boxcox tranform ########
+
+library(MASS)
+boxcox(m5,lambda=seq(-1,1,1/20))
+m_boxcox <- lm(price^0.5 ~ saledate + gba + grade + I(ayb^4) + I(bathrm_tot^2) + 
+                 fireplaces + I(sale_eyb^4) + extwall + gba_p + rooms + 
+                 I(kitchens^4) + style + stories +
+                 I(landarea^3) + 
+                 saledate:gba + saledate:grade + saledate:extwall + fireplaces:gba_p + 
+                 gba:gba_p  + style:stories + grade:stories + 
+                 saledate:style + 
+                 saledate:sale_ayb, dtrain)
+
+plot(m_boxcox,which=1, pch=1, cex=0.3 )
+plot(m_boxcox)
 
 
 ########## backwards ############
