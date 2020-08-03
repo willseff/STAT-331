@@ -15,7 +15,6 @@ fullmodel <- lm(price~(.)^2 + I(gba^2) + I(bathrm^2) + I(hf_bathrm^2) + I(rooms^
                   I(sale_year^4) + I(sale_ayb^4) + I(sale_eyb^4) + I(gba_p^4) +
                   I(bathrm_tot^4) + I(sale_year^5) +
                   + I(sale_year^6), data=dtrain)
-fullmodel <- lm(price~poly(.,2), data=dtrain)
 
 s <- step(nullmodel,scope=list(upper=fullmodel),direction="both")
 
@@ -104,6 +103,41 @@ m_boxcox <- lm(price^0.5 ~ saledate + gba + grade + I(ayb^4) + I(bathrm_tot^2) +
 plot(m_boxcox,which=1, pch=1, cex=0.3 )
 plot(m_boxcox)
 
+######## reduce variables ##########
+
+m_boxcox <- lm(price^0.5 ~ saledate + gba + grade + I(ayb^4) + I(bathrm_tot^2) + 
+                 fireplaces + I(sale_eyb^4) + extwall + gba_p + rooms + 
+                 I(kitchens^4) + style + stories +
+                 I(landarea^3) + 
+                 saledate:gba + saledate:grade + saledate:extwall + fireplaces:gba_p + 
+                 gba:gba_p  + style:stories + grade:stories + 
+                 saledate:style + 
+                 saledate:sale_ayb, dtrain)
+
+anova(m_boxcox)
+
+# second iteration
+
+m_boxcox2 <- lm(price^0.5 ~ saledate + gba + grade + I(ayb^4) + I(bathrm_tot^2) + 
+                  fireplaces + I(sale_eyb^4) + extwall + gba_p + rooms +
+                  style + stories + I(landarea^3) + 
+                  saledate:gba + saledate:grade + saledate:extwall + 
+                  gba:gba_p  + style:stories + grade:stories, dtrain)
+
+anova(m_boxcox2)
+plot(m_boxcox2)
+
+# third iteration
+
+m_boxcox3 <- lm(price^0.5 ~ saledate + gba + grade + ayb + I(ayb^2) + bathrm_tot + 
+                  fireplaces+ sale_eyb + I(sale_eyb^2)+ I(sale_eyb^3) + I(sale_eyb^4) + 
+                  extwall + gba_p + landarea + I(landarea^2) + saledate:gba, dtrain)
+
+summary(m_boxcox3)
+anova(m_boxcox3)
+plot(m_boxcox3)
+
+
 
 ########## backwards ############
 library(MASS)
@@ -115,4 +149,4 @@ fullmodel <- lm(price~(.)^2 + I(gba^2) + I(bathrm^2) + I(hf_bathrm^2) + I(rooms^
                   I(bathrm_tot^2) + I(sale_year^3) + I(sale_year^4)+ I(sale_year^5) +
                   + I(sale_year^6), data=dtrain)
 
-newmodel <- addterm(nullmodel, scope=fullmodel, test='F')
+addterm(nullmodel, scope=fullmodel, test='F')

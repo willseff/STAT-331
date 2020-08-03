@@ -65,11 +65,19 @@ LinearModel <- function(dtrain, dtest){
   dtrain <- preprocessing(dtrain)
   
   ######## model fitting #########
-    # A simple linear model fit
-    fit <- lm(price ~ saledate + gba + grade + I(ayb^4) + I(bathrm_tot^2) + 
-                fireplaces + I(sale_eyb^4) + extwall + gba_p, dtrain)
+  library(MASS)
+  
+  # reduced boxcox transform model
+  fit <- lm(price^0.5 ~ saledate + gba + grade + ayb + I(ayb^2) + bathrm_tot + 
+                    fireplaces+ sale_eyb+ I(sale_eyb^2)+ I(sale_eyb^3) + I(sale_eyb^4) + 
+                    extwall + gba_p + landarea + I(landarea^2) + saledate:gba, dtrain)
+  
     pred <- predict(fit, newdata=preprocessing(dtest))
+    # undo transformation
+    pred <- pred^2
+    # set negetive values to 1
     pred[pred<0]<-1
+  
     res <- data.frame(Id=dtest$Id, price=pred)
     return(res)
     

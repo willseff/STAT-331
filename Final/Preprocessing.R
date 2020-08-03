@@ -35,7 +35,7 @@ preprocessing <- function(df) {
   df$sale_eyb <- df$sale_year - df$eyb
   
   # sale year remodel
-  df$sale_yr_rmdl <- df$yr_rmdl - df$year
+  df$sale_yr_rmdl <- df$yr_rmdl - df$sale_year
   
   # gba percentage of total land
   df$gba_p <- df$gba/df$landarea
